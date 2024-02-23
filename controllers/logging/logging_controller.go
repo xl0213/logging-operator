@@ -312,7 +312,7 @@ func (r *LoggingReconciler) checkFluentdConfigFinalizer(ctx context.Context, log
 		if !controllerutil.ContainsFinalizer(logging, fluentdConfigFinalizer) {
 			controllerutil.AddFinalizer(logging, fluentdConfigFinalizer)
 			if err := r.Update(ctx, logging); err != nil {
-				return ctrl.Result{}, nil
+				return ctrl.Result{}, err
 			}
 		}
 	} else {
@@ -323,7 +323,7 @@ func (r *LoggingReconciler) checkFluentdConfigFinalizer(ctx context.Context, log
 		}
 		controllerutil.RemoveFinalizer(logging, fluentdConfigFinalizer)
 		if err := r.Update(ctx, logging); err != nil {
-			return r.cleanupFluentdConfigReference(ctx, logging, log)
+			return ctrl.Result{}, err
 		}
 	}
 	return ctrl.Result{}, nil
@@ -336,7 +336,7 @@ func (r *LoggingReconciler) checkSyslogNGConfigFinalizer(ctx context.Context, lo
 		if !controllerutil.ContainsFinalizer(logging, syslogNGConfigFinalizer) {
 			controllerutil.AddFinalizer(logging, syslogNGConfigFinalizer)
 			if err := r.Update(ctx, logging); err != nil {
-				return ctrl.Result{}, nil
+				return ctrl.Result{}, err
 			}
 		}
 	} else {
@@ -347,7 +347,7 @@ func (r *LoggingReconciler) checkSyslogNGConfigFinalizer(ctx context.Context, lo
 		}
 		controllerutil.RemoveFinalizer(logging, syslogNGConfigFinalizer)
 		if err := r.Update(ctx, logging); err != nil {
-			return r.cleanupSyslogNGConfigReference(ctx, logging, log)
+			return ctrl.Result{}, err
 		}
 	}
 	return ctrl.Result{}, nil
